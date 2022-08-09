@@ -1,0 +1,29 @@
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'bootstrap.min.css' %}">
+<div class="container"></div>
+<h3>
+    할 일 리스트
+</h3>
+<div>해야할 일 목록입니다. +새로입력 버튼을 눌러 추가하거나
+삭제하세요.</div>
+{% if todo_list %}
+    {% for todo in todo_list %}
+    <div>{% if todo.is_complete == 0 %}
+        {{todo.todo}}
+        <a href="/todolist/complete/{{todo.id}}">완료</a>
+        {% else %}
+        <span style="text-decoration: line-through;">{{todo.todo}}</span>
+        <a href="/todolist/cancel/{{todo.id}}">완료취소</a>
+        {% endif %}
+        <a href="/todolist/del/{{todo.id}}">삭제</a>
+    </div>
+    {% endfor %}
+{% endif %}
+
+<h5>할 일 등록</h5>
+<form method="post" action="/todolist/add/">
+    {% csrf_token %}
+    <input type="text" id="todo" name="todo" maxlength="200">
+    <input type="submit" value="할 일 등록">
+</form>
+
